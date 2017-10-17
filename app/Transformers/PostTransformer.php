@@ -1,20 +1,42 @@
 <?php
 
-namespace App\Fractal;
+namespace App\Transformers;
 
-use App\User;
+use App\Models\Post;
 use League\Fractal;
+use App\Transformers\UserTransformer;
 
-class UserTransformer extends Fractal\TransformerAbstract
+class PostTransformer extends Fractal\TransformerAbstract
 {
-	public function transform(User $user)
+	/**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected $availableIncludes = [
+        'user'
+    ];
+
+	public function transform(Post $post)
 	{
 	    return [
-		    'id'  	   	 => (int) $user->id,
-	        'name'  	 => $user->name,
-	        'email'  	 => $user->email,
-	        'registered' => $user->created_at,
-	        'activated'  => $user->activated
+		    'id'  	   	 => (int) $post->id,
+	        'text'  	 => $post->text,
+	        'header'  	 => $post->header,
+	        'created_at' => $post->created_at,
+	        'likes'		 => $post->activeLikes->count()
 	    ];
 	}
+
+	/**
+     * Include Author
+     *
+     * @return League\Fractal\ItemResource
+     */
+    public function includeUser(Post $post)
+    {
+        $user = $post->user;
+
+        return $this->item($user, new UserTransformer);
+    }
 }

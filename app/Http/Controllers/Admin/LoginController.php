@@ -9,20 +9,31 @@ use JWTAuth;
 
 class LoginController extends Controller
 {
-	public function postLogin(Request $request)
+	/**
+	 * Handle a admin login request for the application
+	 * @param  Request $request
+	 * @return JsonResponse
+	 */
+	public function login(Request $request)
 	{
 		$this->validate($request, [
 			'email' 	=> 'required|email',
 			'password' 	=> 'required'
 		]);
-
+		//checking if exists admin with current credentials
 		if (!$this->verify($request->only('email', 'password')))
-			return response('', 404);
-
-		return response($this->getToken(), 200);
+			//respond error
+			return response()->json(['error' => 'user not found'], 404);
+		//respond token
+		return response()->json(['token' => $this->getToken()], 200);
 	}
 
-	protected function verify(array $credentials )
+	/**
+	 * Verifying admin login and pass
+	 * @param  array $credentials
+	 * @return bool
+	 */
+	protected function verify(array $credentials)
 	{
 		$email 	  = env('ADMIN_EMAIL');
 		$password = env('ADMIN_PASSWORD');
@@ -31,9 +42,13 @@ class LoginController extends Controller
 				$credentials ['password'] == $password);
 	}
 
+	/**
+	 * Creating a new token for admin
+	 * @return string
+	 */
 	protected function getToken()
 	{
 		$payload = JWTFactory::sub('ADMIN')->make();
-    	return JWTAuth::encode($payload);
+    	return JWTAuth::encode($payload)->get();
 	}
 }

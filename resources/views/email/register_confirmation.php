@@ -1,0 +1,1 @@
+<h1><a href="<?=route('activation')?>/?token=<?=$token?>&email=<?=$email?>">CLICK! to activate your account!</a></h1>

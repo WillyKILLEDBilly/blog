@@ -53,6 +53,7 @@ class Handler extends ExceptionHandler
             return response()->json(['token_blacklisted'], 404);
         }
 
+        //return response()->json('page not found =(', 404);
         return parent::render($request, $e);
     }
 }

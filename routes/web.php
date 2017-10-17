@@ -11,24 +11,41 @@
 |
 */
 
-//$router->get('/', 'ExampleController@getTest');
+$router->group(['prefix' => 'api/v1'], function ($router){
 
-$router->post('admin/login', 'Admin\LoginController@postLogin');
-$router->group(['middleware' => 'admin'], function($router)
+// admin login
+$router->post('admin/login', 'Admin\LoginController@login');
+// group for loggined admin
+$router->group(['middleware' => 'admin', 'prefix' => 'admin'], function($router)
 {
-    $router->post('/admin/user', 'Admin\UsersController@store');
-    $router->get('/admin/user/all', 'Admin\UsersController@getAll');
+    $router->post('users', 'Admin\UsersController@store');
+    $router->get('users/all', 'Admin\UsersController@readAll');
 });
 
-$router->get('/activation', 'Auth\ActivateAccountController@show');
-$router->post('/resetpassword', 'Auth\ActivateAccountController@edit');
+// login and account activation
+$router->group(['namespace' => 'Auth'], function($router){
+	$router->get('/activation', ['as' => 'activation', 'uses' => 'ActivateAccountController@show']);
+	$router->post('/resetpassword', ['as' => 'resetpassword', 'uses'=> 'ActivateAccountController@updatePassword']);
+	$router->post('/login', 'LoginController@login');
+});
 
-$router->post('/login', 'Auth\LoginController@postLogin');
 
+// routes for loggined users
 $router->group(['middleware' => 'auth:api'], function($router)
 {
-    $router->post('/user/post', 'PostController@store');
-    $router->put('/user/post/{id}/update', 'PostController@update');
-    $router->delete('/user/post/{id}/delete', 'PostController@destroy');
-    $router->get('/post/{id}/like', 'LikeController@update');
+	// routes with operations for posts
+	$router->group(['prefix' => 'posts'], function($router){
+		$router->post('/', 'PostController@store');
+		$router->put('{id}', 'PostController@update');
+    	$router->delete('{id}', 'PostController@destroy');
+    	$router->post('{id}/like', 'LikeController@store');
+    	$router->get('most/rated', 'PostController@readMostRated');
+    	$router->get('random/rated', 'PostController@readRandomRated');
+	});
+
+	$router->group(['prefix' => 'user'], function($router){
+		$router->get('{id}', 'UserController@read');
+	});
+});
+
 });

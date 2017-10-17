@@ -10,26 +10,38 @@ use App\User;
 
 class ActivateAccountController extends Controller
 {
+	/**
+	 * User instance
+	 * @var User
+	 */
 	protected $user;
 
+	/**
+	 * Displaying reset password form
+	 * @param  Request $request
+	 * @return View/404
+	 */
 	public function show(Request $request)
 	{	
 		if (!($request->has('email') && $request->has('token')))
-			response()->json(['user no found'], 404);
+			return response('404 not found', 404);
 
 		$this->userFromEmailToken($request->only('email','token'));
 
 		if (!$this->user)
-			return response()->json(['user no found'], 404);
+			return response('404 not found', 404);
 
-		$this->user->email_confirmation_token = null;
-		$this->user->reset_password_token 	= hash_hmac('sha256', str_random(40), env('APP_KEY'));
-		$this->user->save();
+		$this->updateUserTokens();		
 
-		return view('auth.resetpassword', ['email'=>$this->user->email, 'token' => $this->user->reset_password_token]);
+		return view('auth.reset_password', ['email'=>$this->user->email, 'token' => $this->user->reset_password_token]);
 	}
 
-	public function edit(Request $request)
+	/**
+	 * Setting new password
+	 * @param  Request $request
+	 * @return View/404
+	 */
+	public function updatePassword(Request $request)
 	{
 		$this->validate($request, [
 			'password' 			 	=> 'required|between:6,26|confirmed',
@@ -41,16 +53,18 @@ class ActivateAccountController extends Controller
 		$this->userFromPasswordToken($request->only('email','token'));
 
 		if (!$this->user)
-			return response()->json(['user no found'], 404);
+			return response('404 not found', 404);
 
-		$this->user->reset_password_token = null;
-		$this->user->password 			= app('hash')->make($request->password);
-		$this->user->activated			= true;
-		$this->user->save();
+		$this->updateUserPassword($request->only('password'));
 
-		return '<h1 align="center">password created</h1>';
+		return view('auth.reset_password_success');
 	}
 
+	/**
+	 * Getting user from email and email token
+	 * @param  array $credentials
+	 * @return void
+	 */
 	protected function userFromEmailToken($credentials)
 	{
 		$this->user = User::where('email', $credentials['email'])
@@ -58,6 +72,11 @@ class ActivateAccountController extends Controller
 			->first();
 	}
 
+	/**
+	 * Getting user from email and reset password token
+	 * @param  array $credentials
+	 * @return void
+	 */
 	protected function userFromPasswordToken($credentials)
 	{
 		$this->user = User::where('email', $credentials['email'])
@@ -65,4 +84,27 @@ class ActivateAccountController extends Controller
 			->first();
 	}
 
+	/**
+	 * Switching token
+	 * @return void
+	 */
+	protected function updateUserTokens()
+	{
+		$this->user->email_confirmation_token = null;
+		$this->user->reset_password_token 	  = hash_hmac('sha256', str_random(40), env('APP_KEY'));
+		$this->user->save();
+	}
+
+	/**
+	 * Update user password, activated state
+	 * @param  array  $params
+	 * @return void
+	 */
+	protected function updateUserPassword(array $params)
+	{
+		$this->user->reset_password_token = null;
+		$this->user->password 			  = app('hash')->make($params['password']);
+		$this->user->activated			  = true;
+		$this->user->save();
+	}
 }

@@ -34,7 +34,9 @@ class AuthServiceProvider extends ServiceProvider
             /*if ($request->input('api_token')) {
                 return User::where('api_token', $request->input('api_token'))->first();
             }*/
-            return \App\User::where('email', $request->input('email'))->first();
+            return User::where('email', $request->input('email'))
+                        ->where('activated',true)
+                        ->first();
         });
     }
 }

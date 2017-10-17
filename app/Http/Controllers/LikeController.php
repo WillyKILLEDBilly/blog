@@ -10,25 +10,111 @@ use App\User;
 
 class LikeController extends Controller
 {
-	public function update(Request $request,int $id)
+	/**
+	 * Liking post
+	 * @var Post
+	 */
+	protected $post;
+
+	/**
+	 * Current like instance
+	 * @var Like
+	 */
+	protected $like;
+
+	/**
+	 * Authenticated user
+	 * @var User
+	 */
+	protected $user;
+
+	/**
+	 * Setting current user
+	 */
+	public function __construct()
 	{
-		$post = Post::findOrFail($id);
-		$user = JWTAuth::parseToken()->authenticate();
+		$this->user = JWTAuth::parseToken()->authenticate();
+	}
 
-		$like = Like::where('user_id', $user->id)
-					->where('post_id', $post->id)
-					->first();
+	/**
+	 * Liking post
+	 * @param  Request $request
+	 * @param  int     $id      post id
+	 * @return JsonResponse
+	 */
+	public function store(Request $request,int $id)
+	{
+		if (!$this->findPost($id))
+			return response()->json(['error' => 'not found'], 404);
 
-		if (!$like) {
-			$like = new Like;
-			$like->user_id = $user->id;
-			$like->post_id = $post->id;
-		}
+		// check if like exists
+		if ($this->findLike()) 
+			// update current
+			$this->updateLike();
 		else
-			$like->state = !($like->state);
+			// create new
+			$this->createLike();
 
-		$like->save();
+		return $this->storedLikeResponse();
+	}
 
-		return response()->json([(int)$like->state,  Post::findOrFail($id)->activeLikes()->count()] ,200);
-	}	
+	/**
+	 * Trying to find post
+	 * @param  int    $id
+	 * @return bool
+	 */
+	protected function findPost(int $id)
+	{
+		$this->post = Post::find($id);
+		return ($this->post!=null);
+	}
+
+	/**
+	 * Trying to find like to a current post
+	 * made by authenticated user
+	 * @return bool
+	 */
+	protected function findLike()
+	{
+		$this->like = Like::where('user_id', $this->user->id)
+						->where('post_id', $this->post->id)
+						->first();
+		return ($this->like!=null);
+	}
+
+	/**
+	 * Creating new Like
+	 * @return void
+	 */
+	protected function createLike()
+	{
+		$this->like = new Like;
+		$this->like->user_id = $this->user->id;
+		$this->like->post_id = $this->post->id;
+		$this->like->save();
+	}
+
+	/**
+	 * Updating current like,
+	 * sets the inverse value
+	 * @return void
+	 */
+	protected function updateLike()
+	{
+		$this->like->state = !($this->like->state);
+		$this->like->save();
+	}
+
+	/**
+	 * Success stored like response
+	 * @return JsonResponse
+	 */
+	protected function storedLikeResponse()
+	{
+		$result = [
+			'like_state' => (bool)$this->like->state,
+			'active_likes_count' => $this->post->activeLikes()->count()
+		];
+		return response()->json($result, 201);
+	}
 }

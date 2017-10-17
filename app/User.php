@@ -40,4 +40,41 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
     {
         return [];
     }
+
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
+    }
+
+    /* public function posts(int $currentCursor = null,int $limit)
+    {
+        if ($currentCursor)
+            return $this->hasMany('App\Models\Post')
+                        ->offset($currentCursor)
+                        ->limit($limit);
+        else
+            return $this->hasMany('App\Models\Post')
+                        ->limit($limit);
+    }*/
+
+    public static function pagination($currentCursor, $limit, $activated)
+    {
+        if ($currentCursor) {
+            $users = User::where(function ($query) use ($activated, $currentCursor){
+                        if($activated!=null)
+                            $query->where('activated', (bool)$activated);
+                    })
+                    ->offset($currentCursor)
+                    ->take($limit)
+                    ->get();
+        } else {
+            $users = User::where(function ($query) use ($activated){
+                        if($activated!=null)
+                            $query->where('activated', (bool)$activated);
+                    })
+                    ->take($limit)
+                    ->get();
+        }
+        return $users;
+    }
 }

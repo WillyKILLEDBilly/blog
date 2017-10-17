@@ -22,8 +22,8 @@ class Admin
 			$jwtToken = JWTAuth::setToken($token)
                         ->getPayload();
 			if ($jwtToken->get('sub') == 'ADMIN') 
-                return $next($request);;		
+                return $next($request);		
     	}
-    	   return response('[no access]', 404);
+    	   return response()->json(['error' => 'no access'], 404);
     }
 }
