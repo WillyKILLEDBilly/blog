@@ -24,7 +24,8 @@ class CreatePostLikesTable extends Migration
                     ->on('users');
             $table->foreign('post_id')
                     ->references('id')
-                    ->on('posts');
+                    ->on('posts')
+                    ->onDelete('cascade');;
         });
     }
 

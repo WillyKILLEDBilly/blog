@@ -1,0 +1,370 @@
+{
+	"info": {
+		"name": "blog-api",
+		"_postman_id": "22946847-6970-3a92-0b8e-c77712a87e0f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "admin add user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBRE1JTiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hcGkvdjEvYWRtaW4vbG9naW4iLCJpYXQiOjE1MDgwODA4OTksImV4cCI6MTUwODA4NDQ5OSwibmJmIjoxNTA4MDgwODk5LCJqdGkiOiJ1M2V1Wm93a0pjS3lKckEwIn0.EKvTgJ8qx07_LPPjLfX925SYaNllNnloJC42s5aLvEM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/admin/users?email=willykilledbilly@gmail.com&name=Pavlo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "willykilledbilly@gmail.com",
+							"equals": true
+						},
+						{
+							"key": "name",
+							"value": "Pavlo",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "admin get users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBRE1JTiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hcGkvdjEvYWRtaW4vbG9naW4iLCJpYXQiOjE1MDgxMjY5OTIsImV4cCI6MTUwODEzMDU5MiwibmJmIjoxNTA4MTI2OTkyLCJqdGkiOiJJaWtPTUxhSm12WjBMdnl6In0.hYxHX8MNw5-JXfOY73DI90Wy5nlCe63SXGoZR16KMqA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/admin/users/all/?cursor=5&limit=30&activated=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"users",
+						"all",
+						""
+					],
+					"query": [
+						{
+							"key": "cursor",
+							"value": "5",
+							"equals": true
+						},
+						{
+							"key": "limit",
+							"value": "30",
+							"equals": true
+						},
+						{
+							"key": "activated",
+							"value": "0",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"login"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNTA4MTM0MjM1LCJleHAiOjE1MDgxMzc4MzUsIm5iZiI6MTUwODEzNDIzNSwianRpIjoiYXV0UHhUSmhWT24zRHkwcyIsInN1YiI6MTA3LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.Vv5HCtXxNfKds12XcTs7LussX_0ELacIbdX2gM0qnHE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/posts?text=some new text some new text some new text some new text some new text&header=my first post",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"posts"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "some new text some new text some new text some new text some new text",
+							"equals": true
+						},
+						{
+							"key": "header",
+							"value": "my first post",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "update post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNTA4MTM0MjM1LCJleHAiOjE1MDgxMzc4MzUsIm5iZiI6MTUwODEzNDIzNSwianRpIjoiYXV0UHhUSmhWT24zRHkwcyIsInN1YiI6MTA3LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.Vv5HCtXxNfKds12XcTs7LussX_0ELacIbdX2gM0qnHE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/posts/644?text=some new text some new text some new text some new text some new text&header=my first poste",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"posts",
+						"644"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "some new text some new text some new text some new text some new text",
+							"equals": true
+						},
+						{
+							"key": "header",
+							"value": "my first poste",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "delete post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNTA4MTM4MDE1LCJleHAiOjE1MDgxNDE2MTUsIm5iZiI6MTUwODEzODAxNSwianRpIjoiaG81VHBPOXZCN1NSUzI4ZSIsInN1YiI6MTA3LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.R0yJXqWN24PasAhJj0EPE0zA-Sf4OKKOvF6whvihttM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/posts/648",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"posts",
+						"648"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "liking post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNTA4MTQxOTg2LCJleHAiOjE1MDgxNDU1ODYsIm5iZiI6MTUwODE0MTk4NiwianRpIjoiZ2I2bXoxUVZzSEdLanpZQSIsInN1YiI6MTA3LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.kMnrEwFC4UST-owhTP7-KbopEpk-Yr0_BPyyLdy8KHo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/posts/333/like",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"posts",
+						"333",
+						"like"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "random posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNTA4MTUwNjA1LCJleHAiOjE1MDgxNTQyMDUsIm5iZiI6MTUwODE1MDYwNSwianRpIjoiSGJTTkN3UTNzUkY4NEhpNyIsInN1YiI6MTA3LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.iRDu2hOqeXtqaY6bjGrs8LpxrrE1AUaNitqtxCRC13w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/user/13/posts?limit=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"13",
+						"posts"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "1",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "most rated posts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/posts/most/rated",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"posts",
+						"most",
+						"rated"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
